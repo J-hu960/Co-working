@@ -1,8 +1,9 @@
+import { HttpStatus } from "@nestjs/common"
 import { BaseError } from "./error"
 
 export class InvalidIdError extends BaseError {
   private constructor(message: string) {
-    super('invalid-id', message)
+    super(HttpStatus.BAD_REQUEST.toString(), message)
   }
 
   static withInvalidValue(id: string): InvalidIdError {

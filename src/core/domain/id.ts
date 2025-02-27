@@ -2,7 +2,7 @@ import { v4 as uuidv4 } from 'uuid'
 import { validate as uuidValidate } from 'uuid'
 import { InvalidIdError } from './invalid-id.error'
 
-export abstract class Id {
+export  class Id {
   protected constructor(readonly value: string) {}
   static generate(): string {
     return uuidv4()
@@ -16,5 +16,14 @@ export abstract class Id {
 
   equals(id: Id): boolean {
     return id.value === this.value
+  }
+
+  static fromExisting(id:string){
+    if (!uuidValidate(id)) {
+      throw InvalidIdError.withInvalidValue(id)
+    }
+
+    return new Id(id)
+
   }
 }
