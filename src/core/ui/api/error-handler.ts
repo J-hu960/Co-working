@@ -13,6 +13,8 @@ import { InvalidOfficeNumberError } from 'src/core/domain/espacios/office/excepc
 import { NotAvailableMeetingroom } from 'src/core/domain/espacios/reservation/excepcions/NotAvailableMeetingroom'
 import { DuplicateHotdesktopReservationError } from 'src/core/domain/espacios/hotdesktopReservation/excepcions/duplicate-reservatio.error'
 import { BadInpurHotdesktopReservationError } from 'src/core/domain/espacios/hotdesktopReservation/excepcions/bad-input.error'
+import { BadinputMembershipError } from 'src/core/domain/memberships/membership/excepcions/InvalidMembershipInput.error'
+import { DuplicateMembershipError } from 'src/core/domain/memberships/membership/excepcions/DuplicateMembershipError.error'
 
 export class ErrorResponse {
   code: string
@@ -91,10 +93,14 @@ if(error instanceof BadInpurHotdesktopReservationError){
   response.status(HttpStatus.BAD_REQUEST).json(ErrorResponse.fromBaseError(error))
 } 
 
+if(error instanceof BadinputMembershipError){
+  response.status(HttpStatus.BAD_REQUEST).json(ErrorResponse.fromBaseError(error))
+} 
 
-  
+if(error instanceof DuplicateMembershipError){
+  response.status(HttpStatus.BAD_REQUEST).json(ErrorResponse.fromBaseError(error))
+} 
 
-  
 
   response.status(HttpStatus.INTERNAL_SERVER_ERROR).json(ErrorResponse.fromBaseError(error))
 

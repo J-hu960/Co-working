@@ -18,13 +18,19 @@ import { RESERVATION_REPOSITORY, ReservationInmemoryRepository } from './core/in
 import { EventEmitterModule } from '@nestjs/event-emitter';
 import { ReservationCreatedHandler } from './core/ui/api/reservation-created.handler';
 import { ReservationCreatedEventHandler } from './core/application/espacios/reservation/reservation-created.event-handler';
+import { RegisterMembershipController } from './core/ui/api/register-membership.controller';
+import { MEMBERSHIP_EVENTSTORE, MembershipInmemoryEventStore } from './core/infrastructure/memberships/inmemory-event-store';
+import { MEMBERSHIP_READMODEL, MembershipReadModelInmemoty } from './core/infrastructure/memberships/inmemory-readmodel';
+import { RegisterMembershipCommandHandler } from './core/application/memberships/membership/register-membership.command-handler';
+import { MembershipCreatedHandler  } from './core/ui/api/membership-created.event-handler';
+import { MembershipCreatedEventHandler } from './core/application/memberships/membership/register-membership.event-handler';
 
 @Module({
   imports: [
     EventEmitterModule.forRoot()
 
   ],
-  controllers: [AppController,RegisterHotdesktopController,RegisterMeetingroomController,RegisterOfficeController,ResgisterMeetingRoomReservationController],
+  controllers: [AppController,RegisterHotdesktopController,RegisterMeetingroomController,RegisterOfficeController,ResgisterMeetingRoomReservationController, RegisterMembershipController],
   providers: [AppService,
     RegisterHotdesktopCommadHandler,
     {provide:Hotdesktop_REPOSITORY,useClass:HotdesktopInMemory},
@@ -36,7 +42,14 @@ import { ReservationCreatedEventHandler } from './core/application/espacios/rese
      {provide:EVENTEMMITER_NEST,useClass:EventEmmiterNest},
      {provide:RESERVATION_REPOSITORY,useClass:ReservationInmemoryRepository},
      ReservationCreatedHandler,
-     ReservationCreatedEventHandler
+     ReservationCreatedEventHandler,
+     {provide:MEMBERSHIP_EVENTSTORE,useClass:MembershipInmemoryEventStore},
+     {provide:MEMBERSHIP_READMODEL,useClass:MembershipReadModelInmemoty},
+     RegisterMembershipCommandHandler,
+     MembershipCreatedHandler,
+     MembershipCreatedEventHandler
+
+
 
      
   ],

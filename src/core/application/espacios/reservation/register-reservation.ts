@@ -22,7 +22,6 @@ export class RegisterReservationCommadHandler{
     handle(command:RegisterReservationCommand){
         const meetingRoomId = MeetingRoomId.withValue(command.meetingRoomId)
         const reservation = Reservation.create(command.date,command.hour,meetingRoomId,command.userId,command.duration)
-        console.log(`New reservation: ${reservation.date.date}`)
          if(!this.meetingRoomRepository.existsId(reservation.meetingRoomID)){
              throw InvalidIdError.withInvalidValue(reservation.meetingRoomID.value)
         }
@@ -33,6 +32,5 @@ export class RegisterReservationCommadHandler{
 
         this.reservationRepository.save(reservation);
         this.eventPublisher.publish(reservation.releaseEvents())
-        console.log('Reservation created and event published')
     }
 }
